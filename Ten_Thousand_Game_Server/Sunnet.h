@@ -2,11 +2,11 @@
 
 class Sunnet {
 public:
-	//µ¥Àı
+	//å•ä¾‹
 	static Sunnet* inst;
 public:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	Sunnet();
-	//³õÊ¼»¯²¢¿ªÊ¼
+	//åˆå§‹åŒ–å¹¶å¼€å§‹
 	void Start();
 };
