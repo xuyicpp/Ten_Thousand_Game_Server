@@ -1,8 +1,9 @@
-#include <iostream>
-
-using namespace std;
+#include "Sunnet.h"
 
 int main()
 {
-	cout << "Hello World" << endl;
+	new Sunnet();
+	Sunnet::inst->Start();
+	//开启系统后的一些逻辑
+	return 0;
 }
