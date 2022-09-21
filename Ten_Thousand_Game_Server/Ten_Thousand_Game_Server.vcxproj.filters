@@ -21,9 +21,15 @@
     <ClCompile Include="Sunnet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Worker.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sunnet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Worker.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
