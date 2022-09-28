@@ -24,6 +24,9 @@
     <ClCompile Include="Worker.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Service.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sunnet.h">

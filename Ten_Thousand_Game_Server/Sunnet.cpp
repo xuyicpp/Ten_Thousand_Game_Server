@@ -12,6 +12,7 @@ Sunnet::Sunnet() {
 //¿ªÆôÏµÍ³
 void Sunnet::Start() {
 	cout << "Hello Sunnet" << endl;
+	pthread_rwlock_init(&servicesLock, NULL);
 	StartWorker();
 }
 
@@ -31,4 +32,47 @@ void Sunnet::Wait() {
 	if (workerThreads[0]) {
 		workerThreads[0]->join();
 	}
+}
+
+uint32_t Sunnet::NewService(shared_ptr<string> type) {
+	auto srv = make_shared<Service>();
+	srv->type = type;
+	pthread_rwlock_wrlock(&servicesLock);
+	{
+		srv->id = maxId;
+		maxId++;
+		services.emplace(srv->id, srv);
+	}
+	pthread_rwlock_unlock(&servicesLock);
+	srv->OnInit();
+	return srv->id;
+}
+
+shared_ptr<Service> Sunnet::GetService(uint32_t id) {
+	shared_ptr<Service> srv = NULL;
+	pthread_rwlock_rdlock(&servicesLock);
+	{
+		unordered_map<uint32_t, shared_ptr<Service>>::iterator iter = services.find(id);
+		if (iter != services.end()) {
+			srv = iter->second;
+		}
+	}
+	pthread_rwlock_unlock(&servicesLock);
+	return srv;
+}
+
+void Sunnet::KillService(uint32_t id) {
+	shared_ptr<Service> srv = GetService(id);
+	if (!srv) {
+		return;
+	}
+
+	srv->OnExit();
+	srv->isExiting = true;
+
+	pthread_rwlock_wrlock(&servicesLock);
+	{
+		services.erase(id);
+	}
+	pthread_rwlock_unlock(&servicesLock);
 }

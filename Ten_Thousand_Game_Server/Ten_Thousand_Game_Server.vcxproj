@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Service.cpp" />
     <ClCompile Include="Sunnet.cpp" />
     <ClCompile Include="Worker.cpp" />
   </ItemGroup>
