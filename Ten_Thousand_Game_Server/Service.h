@@ -32,5 +32,10 @@ public:
 
 private:
 	shared_ptr<BaseMsg> PopMsg();
+
+public:
+	bool inGlobal = false;
+	pthread_spinlock_t inGlobalLock;
+	void SetInGlobal(bool isIn);
 };
 

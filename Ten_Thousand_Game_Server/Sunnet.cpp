@@ -13,6 +13,7 @@ Sunnet::Sunnet() {
 void Sunnet::Start() {
 	cout << "Hello Sunnet" << endl;
 	pthread_rwlock_init(&servicesLock, NULL);
+	pthread_spin_init(&globalLock, PTHREAD_PROCESS_PRIVATE);
 	StartWorker();
 }
 
@@ -75,4 +76,27 @@ void Sunnet::KillService(uint32_t id) {
 		services.erase(id);
 	}
 	pthread_rwlock_unlock(&servicesLock);
+}
+
+shared_ptr<Service> Sunnet::PopGlobalQueue() {
+	shared_ptr<Service> srv = NULL;
+	pthread_spin_lock(&globalLock);
+	{
+		if (!globalQueue.empty()) {
+			srv = globalQueue.front();
+			globalQueue.pop();
+			globalLen--;
+		}
+	}
+	pthread_spin_unlock(&globalLock);
+	return srv;
+}
+
+void Sunnet::PushGlobalQueue(shared_ptr<Service> srv) {
+	pthread_spin_lock(&globalLock);
+	{
+		globalQueue.push(srv);
+		globalLen++;
+	}
+	pthread_spin_unlock(&globalLock);
 }

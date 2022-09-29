@@ -30,4 +30,15 @@ public:
 	void KillService(uint32_t id);
 private:
 	shared_ptr<Service> GetService(uint32_t id);
+
+private:
+	queue<shared_ptr<Service>> globalQueue;
+	int globalLen = 0;
+	pthread_spinlock_t globalLock;
+
+public:
+	void Send(uint32_t told, shared_ptr<BaseMsg> msg);
+
+	shared_ptr<Service> PopGlobalQueue();
+	void PushGlobalQueue(shared_ptr<Service> srv);
 };

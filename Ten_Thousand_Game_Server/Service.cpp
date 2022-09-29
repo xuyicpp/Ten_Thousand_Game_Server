@@ -4,10 +4,12 @@
 
 Service::Service() {
 	pthread_spin_init(&queueLock, PTHREAD_PROCESS_PRIVATE);
+	pthread_spin_init(&inGlobalLock, PTHREAD_PROCESS_PRIVATE);
 }
 
 Service::~Service() {
 	pthread_spin_destroy(&queueLock);
+	pthread_spin_destroy(&inGlobalLock);
 }
 
 void Service::PushMsg(shared_ptr<BaseMsg> msg) {
@@ -62,4 +64,12 @@ void Service::ProcessMsgs(int max) {
 			break;
 		}
 	}
+}
+
+void Service::SetInGlobal(bool isIn) {
+	pthread_spin_lock(&inGlobalLock);
+	{
+		inGlobal = isIn;
+	}
+	pthread_spin_unlock(&inGlobalLock);
 }
