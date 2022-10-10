@@ -100,3 +100,4 @@ void Sunnet::PushGlobalQueue(shared_ptr<Service> srv) {
 	}
 	pthread_spin_unlock(&globalLock);
 }
+

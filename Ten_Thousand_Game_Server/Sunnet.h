@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include "Service.h"
 
+class Worker;
+
 class Sunnet {
 public:
 	//单例
@@ -41,4 +43,6 @@ public:
 
 	shared_ptr<Service> PopGlobalQueue();
 	void PushGlobalQueue(shared_ptr<Service> srv);
+
+	shared_ptr<BaseMsg> MakeMsg(uint32_t source, char* buff, int len);
 };

@@ -73,3 +73,24 @@ void Service::SetInGlobal(bool isIn) {
 	}
 	pthread_spin_unlock(&inGlobalLock);
 }
+
+
+void Sunnet::Send(uint32_t told, shared_ptr<BaseMsg> msg) {
+	shared_ptr<Service> toSrv = GetService(told);
+	if (!toSrv) {
+		cout << "Send fail, toSrv not exist told:" << told << endl;
+		return;
+	}
+
+	toSrv->PushMsg(msg);
+	bool hasPush = false;
+	pthread_spin_lock(&toSrv->inGlobalLock);
+	{
+		if (!toSrv->inGlobal) {
+			PushGlobalQueue(toSrv);
+			toSrv->inGlobal = true;
+			hasPush = true;
+		}
+	}
+	pthread_spin_unlock(&toSrv->inGlobalLock);
+}
