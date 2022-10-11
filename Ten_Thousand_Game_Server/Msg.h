@@ -11,7 +11,7 @@ public:
 
 	int type;
 	char load[99999999]{};	//用于检测内存泄漏，仅用于调试
-	virtual ~BaseMsg();
+	virtual ~BaseMsg() {};
 
 };
 
@@ -21,4 +21,5 @@ public:
 	int source; 
 	shared_ptr<char> buff;
 	size_t size;
+	~ServiceMsg() {};
 };

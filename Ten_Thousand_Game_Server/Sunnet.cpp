@@ -101,3 +101,12 @@ void Sunnet::PushGlobalQueue(shared_ptr<Service> srv) {
 	pthread_spin_unlock(&globalLock);
 }
 
+shared_ptr<BaseMsg> Sunnet::MakeMsg(uint32_t source, char* buff, int len) {
+	auto msg = make_shared<ServiceMsg>();
+	msg->type = BaseMsg::TYPE::SERVICE;
+	msg->source = source;
+	msg->buff = shared_ptr<char>(buff);
+	msg->size = len;
+	return msg;
+}
+

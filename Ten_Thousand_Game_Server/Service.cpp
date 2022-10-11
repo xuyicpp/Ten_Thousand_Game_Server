@@ -39,7 +39,15 @@ void Service::OnInit() {
 }
 
 void Service::OnMsg(shared_ptr<BaseMsg> msg) {
-	cout << "[" << id << "] OnMsg" << endl;
+	if (msg->type == BaseMsg::TYPE::SERVICE) {
+		auto m = dynamic_pointer_cast<ServiceMsg>(msg);
+		cout << "[" << id << "] OnMsg " << m->buff <<endl;
+		auto msgRet = Sunnet::inst->MakeMsg(id, new char[9999999] {'p', 'i', 'n', 'g', '\0'}, 9999999);
+		Sunnet::inst->Send(m->source, msgRet);
+	}
+	else {
+		cout << "[" << id << "] OnMsg" << endl;
+	}
 }
 
 void Service::OnExit() {

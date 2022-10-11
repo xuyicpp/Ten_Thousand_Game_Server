@@ -10,7 +10,7 @@ void Worker::operator()() {
 	{
 		shared_ptr<Service> srv = Sunnet::inst->PopGlobalQueue();
 		if (!srv) {
-			this_thread::sleep_for(std::chrono::milliseconds(100));
+			this_thread::sleep_for(std::chrono::milliseconds(2000));
 		}
 		else {
 			srv->ProcessMsgs(eachNum);
